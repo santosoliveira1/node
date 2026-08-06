@@ -1,0 +1,129 @@
+/* 1. Reset básico e estilo do fundo da página */
+/* 1. Reset básico e estilo do fundo da página */
+body {
+    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+
+    /* CENTRALIZAÇÃO VERTICAL E HORIZONTAL */
+    display: flex;
+    flex-direction: column;
+    /* FORÇA OS ELEMENTOS A FICAREM UM EMBAIXO DO OUTRO */
+    justify-content: center;
+    /* Centraliza no eixo principal */
+    align-items: center;
+    /* Centraliza no eixo cruzado */
+    gap: 20px;
+    /* Cria um espaçamento entre o form e a tabela */
+
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Você pode remover o display: flex daqui, pois o body já faz o trabalho de centralizar */
+.styled_table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    /* Deixa as bordas da tabela bonitas e coladas */
+}
+
+/* 2. Estilização do Formulário */
+.meu_formulario {
+    /* Cor de fundo do cartão do formulário */
+    background-color: #ffffff;
+    /* Fundo branco */
+
+    /* PADDING: Espaçamento interno */
+    padding: 30px;
+    /* Cria um respiro interno em todos os lados */
+
+    /* BORDAS E ARREDONDAMENTO */
+    border: 2px solid #3b82f6;
+    /* Borda de 2px, sólida e azul */
+    border-radius: 10px;
+    /* Arredonda os cantos da borda */
+
+    /* Dimensões e Sombra para dar um efeito bonito */
+    width: 100%;
+    max-width: 350px;
+    /* Impede que o formulário fique esticado demais */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave ao redor */
+}
+
+/* 3. Estilizando os elementos internos do formulário */
+.meu_formulario h2 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+}
+
+.meu_formulario label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.meu_formulario input {
+    width: 100%;
+    padding: 10px;
+    /* Espaço interno nos campos de texto */
+    margin-bottom: 15px;
+    /* Espaço abaixo de cada campo */
+    border: 1px solid #ccc;
+    /* Borda fina e discreta */
+    border-radius: 5px;
+    box-sizing: border-box;
+    /* Garante que o padding não quebre a largura */
+}
+
+.meu_formulario button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3b82f6;
+    /* Fundo azul para o botão */
+    color: white;
+    /* Texto branco */
+    border: none;
+    /* Remove a borda padrão do botão */
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    /* Muda o ponteiro do mouse ao passar por cima */
+}
+
+/* Efeito ao passar o mouse sobre o botão */
+.meu_formulario button:hover {
+    background-color: #2c416e;
+    /* Escurece um pouco o azul */
+}
+
+.styled_table {
+    width: 100%;
+    max-width: 410px;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled_table th,
+.styled_table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.styled_table thead tr {
+    background-color: #3b82f6;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.styled_table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled_table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}

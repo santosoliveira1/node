@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Burger - Sistema de Pedidos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Menu Superior de Navegação do Sistema -->
+    <header class="main-header">
+        <div class="logo">🍔 Dev Burger</div>
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="switchTab('pedido')">Novo Pedido</button>
+            <button class="nav-btn" onclick="switchTab('historico')">Histórico</button>
+            <button class="nav-btn" onclick="switchTab('clientes')">Clientes</button>
+            <button class="nav-btn" onclick="switchTab('produtos')">Produtos</button>
+            <button class="nav-btn" onclick="Limpar()">Limpar localstorage</button>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <!-- SEÇÃO: NOVO PEDIDO -->
+        <section id="tab-pedido" class="tab-content active">
+            <!-- Barra de Progresso -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="step-indicator active" id="step1-indicator">1. Hambúrguer</div>
+                <div class="step-indicator" id="step2-indicator">2. Bebida</div>
+                <div class="step-indicator" id="step3-indicator">3. Adicionais</div>
+                <div class="step-indicator" id="step4-indicator">4. Resumo</div>
+            </div>
+
+            <!-- ETAPA 1: HAMBÚRGUER -->
+            <div id="step-1" class="step-panel active">
+                <h2>Escolha o seu Hambúrguer</h2>
+                <div class="grid-container" id="burgers-grid">
+                    <!-- Gerado dinamicamente via JS -->
+                </div>
+                <div class="actions-container">
+                    <button class="btn btn-next" onclick="nextStep(2)">Próximo</button>
+                </div>
+            </div>
+
+            <!-- ETAPA 2: BEBIDAS -->
+            <div id="step-2" class="step-panel">
+                <h2>Escolha uma Bebida</h2>
+                <div class="grid-container" id="drinks-grid">
+                    <!-- Gerado dinamicamente via JS -->
+                </div>
+                <div class="actions-container">
+                    <button class="btn btn-prev" onclick="prevStep(1)">Voltar</button>
+                    <button class="btn btn-next" onclick="nextStep(3)">Próximo</button>
+                </div>
+            </div>
+
+            <!-- ETAPA 3: ADICIONAIS -->
+            <div id="step-3" class="step-panel">
+                <h2>Deseja Adicionais?</h2>
+                <div class="grid-container" id="addons-grid">
+                    <!-- Gerado dinamicamente via JS -->
+                </div>
+                <div class="obs-container">
+                    <label for="order-obs">Observações do Pedido:</label>
+                    <textarea id="order-obs" rows="3" placeholder="Ex: Sem cebola, ponto da carne, etc..."></textarea>
+                </div>
+                <div class="actions-container">
+                    <button class="btn btn-prev" onclick="prevStep(2)">Voltar</button>
+                    <button class="btn btn-next" onclick="nextStep(4)">Finalizar Pedido</button>
+                </div>
+            </div>
+
+            <!-- ETAPA 4: RESUMO -->
+            <div id="step-4" class="step-panel">
+                <h2>Resumo do Pedido</h2>
+                <div class="resume-card" id="order-resume">
+                    <!-- Gerado via JS -->
+                </div>
+                <div class="actions-container">
+                    <button class="btn btn-success" onclick="confirmOrder()">Confirmar e Enviar</button>
+                    <button class="btn btn-danger" onclick="resetOrder()">Novo Pedido</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: HISTÓRICO DE PEDIDOS -->
+        <section id="tab-historico" class="tab-content">
+            <h2>Histórico de Pedidos</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Itens</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: CADASTRO DE CLIENTES -->
+        <section id="tab-clientes" class="tab-content">
+            <h2>Cadastro de Clientes</h2>
+            <form id="client-form" class="admin-form">
+                <input type="text" id="client-name" placeholder="Nome Completo" required>
+                <input type="tel" id="client-phone" placeholder="Telemóvel / Telefone" required>
+                <button type="submit" class="btn btn-next">Salvar Cliente</button>
+            </form>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clients-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: CADASTRO DE PRODUTOS -->
+        <section id="tab-produtos" class="tab-content">
+            <h2>Cadastro de Produtos Extras</h2>
+            <form id="product-form" class="admin-form">
+                <input type="text" id="prod-name" placeholder="Nome do Produto" required>
+                <input type="number" id="prod-price" step="0.01" placeholder="Preço (R$)" required>
+                <select id="prod-type" required>
+                    <option value="">Selecione o Tipo</option>
+                    <option value="burger">Hambúrguer</option>
+                    <option value="drink">Bebida</option>
+                    <option value="addon">Adicional</option>
+                </select>
+                <input type="text" id="prod-desc" placeholder="Descrição (Apenas para Hambúrguer)">
+                <button type="submit" class="btn btn-next">Cadastrar Produto</button>
+            </form>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+<script src = "index.js"></script>
+</body>
+</html>

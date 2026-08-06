@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Lista de Produtos - Estoque</title>
+        <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #4a4a4a; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #5c6bc0; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .btn-delete { background-color: #e53935; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .btn-delete:hover { background-color: #c62828; }
+        .nav-link { display: inline-block; margin-bottom: 15px; color: #3f51b5; text-decoration: none; font-weight: bold; }
+        .nav-link:hover { text-decoration: underline; }
+        .empty-message { text-align: center; color: #777; font-style: italic; margin-top: 20px; }
+    </style>
+    </head>
+    <body>
+
+        <div class="container">
+            <a href="index.html" class="nav-link">← Voltar para o Registo</a>
+            <h2>Estoque de Produtos Atual</h2>
+
+            <div id="tableContainer">
+                <table id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsList">
+                        <!-- Os produtos serão injetados aqui via JS -->
+                    </tbody>
+                </table>
+                <p id="emptyMessage" class="empty-message"
+                    style="display: none;">Nenhum produto registado no
+                    estoque.</p>
+            </div>
+        </div>
+
+        <script>
+    // Função para carregar e exibir os produtos
+    function loadProducts() {
+        const productsList = document.getElementById('productsList');
+        const emptyMessage = document.getElementById('emptyMessage');
+        const productsTable = document.getElementById('productsTable');
+        
+        // Obter dados do LocalStorage
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+
+        // Limpar o corpo da tabela antes de renderizar
+        productsList.innerHTML = '';
+
+        if (products.length === 0) {
+            productsTable.style.display = 'none';
+            emptyMessage.style.display = 'block';
+            return;
+        }
+
+        productsTable.style.display = 'table';
+        emptyMessage.style.display = 'none';
+
+        // Mapear e criar as linhas da tabela
+        products.forEach((product, index) => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${escapeHTML(product.name)}</td>
+                <td>R$ ${product.price.toFixed(2)}</td>
+                <td>${product.quantity}</td>
+                <td>
+                    <button class="btn-delete" onclick="deleteProduct(${index})">Excluir</button>
+                </td>
+            `;
+
+            productsList.appendChild(row);
+        });
+    }
+
+    // Função para excluir um produto com base no seu índice no array
+    function deleteProduct(index) {
+        if (confirm('Tem a certeza que deseja excluir este produto?')) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            
+            // Remover o elemento do array
+            products.splice(index, 1);
+            
+            // Atualizar o LocalStorage
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Renderizar novamente a tabela atualizada
+            loadProducts();
+        }
+    }
+
+    // Função auxiliar simples para evitar ataques XSS básicos ao renderizar texto do utilizador
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    }
+
+    // Executar automaticamente ao carregar a página
+    document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
+
+    </body>
+</html>
